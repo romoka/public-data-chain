@@ -23,6 +23,7 @@ class CreatePeopleTable extends Migration
             $table->string('nationality');
             $table->longText('photo');
             $table->longText('id_card_scan');
+            $table->string('address');
             $table->timestamps();
         });
     }

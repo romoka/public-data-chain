@@ -18,5 +18,6 @@ Route::get('/', function () {
 });
 
 Auth::routes();
-
+Route::resource("education","EducationController");
+Route::resource("birth","BirthController");
 Route::get('/home', 'HomeController@index')->name('home');
