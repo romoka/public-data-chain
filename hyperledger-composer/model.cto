@@ -1,0 +1,65 @@
+/*
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+namespace net.pdc
+
+participant Registrar identified by registrarId {
+	o String registrarId
+    o String name
+    o String email
+}
+
+participant Educator identified by educatorId {
+	o String educatorId
+    o String name
+    o String email
+}
+
+concept Birth {
+  o String certificateNo
+  o String placeOfBirth
+  o String hospitalOfBirth
+  o String fatherIdNumber
+  o String motherIdNumber
+  o String informantIdNumber
+  --> Registrar registrar
+  o DateTime dob
+  o DateTime doi  
+}
+
+concept Education {
+    o String level
+    o String institution
+    o DateTime startDate
+    o DateTime endDate
+    o String grade
+    -->Educator educator
+}
+
+asset Person identified by idNumber {
+	o String idNumber
+    o String name
+    o String sex
+    o DateTime dob
+    o String passportNo
+    o String photo
+    o String idScan
+    o String address
+    o Birth birthCertificate optional
+    o Education[] educationRecords optional
+}
+
+transaction CreatePerson {
+  --> Person newPerson
+}
