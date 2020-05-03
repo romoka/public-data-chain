@@ -14,17 +14,15 @@
 
 namespace net.pdc
 
-participant Registrar identified by registrarId {
+abstract participant BusinessParticipant identified by registrarId {
 	o String registrarId
     o String name
     o String email
 }
 
-participant Educator identified by educatorId {
-	o String educatorId
-    o String name
-    o String email
-}
+participant Registrar extends BusinessParticipant {}
+
+participant Educator extends BusinessParticipant {}
 
 concept Birth {
   o String certificateNo
@@ -56,10 +54,10 @@ asset Person identified by idNumber {
     o String photo
     o String idScan
     o String address
-    o Birth birthCertificate optional
+    o Birth birthCertificate
     o Education[] educationRecords optional
 }
 
 transaction CreatePerson {
-  --> Person newPerson
+	o Person newPerson
 }
