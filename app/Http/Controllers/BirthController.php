@@ -112,7 +112,9 @@ class BirthController extends Controller
                 'registrar_id_number'=>$registar->id_number,
                 'date_of_birth'=>$faker->date(),
                 'date_of_issue'=>$faker->date()]);
+
             DB::commit();
+            $this->commitToBlockchain($person);
             return redirect()->route('birth.index');
         }catch (\Throwable $e){
             DB::rollBack();
