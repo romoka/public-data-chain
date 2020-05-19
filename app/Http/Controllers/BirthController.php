@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Person;
+use App\Traits\PDCUtilityTrait;
 use Faker\Factory;
 use Illuminate\Http\Request;
 use App\Birth;
@@ -10,6 +11,7 @@ use Illuminate\Support\Facades\DB;
 
 class BirthController extends Controller
 {
+    use PDCUtilityTrait;
     /**
      * Display a listing of the resource.
      *
@@ -20,7 +22,7 @@ class BirthController extends Controller
         $births = Birth::get();
         return view("birth.index",compact("births"));
     }
-    public function createFather(){
+    private function createFather(){
         $faker = Factory::create();
         return  Person::create([
             'id_number'=>$faker->randomNumber(),
@@ -34,7 +36,7 @@ class BirthController extends Controller
             'address'=>$faker->address]);
     }
 
-    public function createInformant(){
+    private function createInformant(){
         $faker = Factory::create();
         return  Person::create([
             'id_number'=>$faker->randomNumber(),
@@ -48,7 +50,7 @@ class BirthController extends Controller
             'address'=>$faker->address]);
     }
 
-    public function createRegistar(){
+    private function createRegistar(){
         $faker = Factory::create();
         return  Person::create([
             'id_number'=>$faker->randomNumber(),
@@ -123,6 +125,7 @@ class BirthController extends Controller
 
     }
 
+
     /**
      * Store a newly created resource in storage.
      *
@@ -178,4 +181,6 @@ class BirthController extends Controller
     {
         //
     }
+
+
 }

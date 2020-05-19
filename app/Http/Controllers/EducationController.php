@@ -3,10 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Education;
+use App\Traits\PDCUtilityTrait;
 use Illuminate\Http\Request;
 
 class EducationController extends Controller
 {
+    use PDCUtilityTrait;
     /**
      * Display a listing of the resource.
      *
@@ -15,7 +17,9 @@ class EducationController extends Controller
     public function index()
     {
         $education = Education::get();
-        return view("education.index",compact("education"));
+        $levels = ["TERTIARY","UNDER-GRADUATE","POST-GRADUATE"];
+        $institutions = ["STRATHMORE UNIVERSITY","STRATHMORE SCHOOL","STRATHMORE COLLEGE"];
+        return view("education.index",compact("education","levels","institutions"));
     }
 
     /**
@@ -25,7 +29,7 @@ class EducationController extends Controller
      */
     public function create()
     {
-        //
+
     }
 
     /**
@@ -36,7 +40,37 @@ class EducationController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        if(!$request->has("ACTION")){
+            //No Action found
+            return redirect()->route('education.index');
+        }
+        $action = $request->get("ACTION");
+        if($action === "addEduRecord"){
+            $idNumber = trim($request->get("idNumber"));
+            $level = trim($request->get("level"));
+            $institution = trim($request->get("institution"));
+            $start_date = trim($request->get("start_date"));
+            $end_date = trim($request->get("end_date"));
+            $grade = trim($request->get("grade"));
+            $educationRecord = Education::create([
+                'pid_number'=>$idNumber,
+                'level'=>$level,
+                'institution'=>$institution,
+                'start_date'=>$start_date,
+                'end_date'=>$end_date,
+                'grade'=>$grade
+            ]);
+            $res = $this->queryBlockchain($idNumber);
+            if(count($res) === 1){
+                $this->commitToBlockchain($educationRecord);
+                return redirect()->route('education.index');
+            }else{
+                //Student record not found
+                return redirect()->route('education.index');
+            }
+        }
+
+
     }
 
     /**
